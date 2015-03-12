@@ -36,5 +36,7 @@ public class Pool extends HashSet<Server> {
 		}
 		return minCapacity;
 	}
+	
+	
 
 }

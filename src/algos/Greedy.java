@@ -1,5 +1,8 @@
 package algos;
 
+import java.io.File;
+import java.io.IOException;
+
 import test.Datacenter;
 import test.Pool;
 import test.Server;
@@ -83,4 +86,23 @@ public class Greedy {
 	}
 	
 	*/
+    
+    
+    
+    public static void main(String[] args) throws IOException {
+    	Datacenter dc = new Datacenter(new File("data/dc.in"));
+		allocatePools(dc);
+		int minCapacity = Integer.MAX_VALUE;
+		for(Pool pool : dc.allPools) {
+			int capacity = pool.getTotalCapacity();
+			System.out.println(capacity);
+			
+			if(capacity<minCapacity) {
+				minCapacity = capacity;
+			}
+		}
+		
+		System.out.println(minCapacity);
+		
+    }
 }
