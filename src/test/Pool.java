@@ -37,6 +37,7 @@ public class Pool extends HashSet<Server> {
 		return minCapacity;
 	}
 	
+	
 	public int down(int numTotalRows) {
 		int minCapacity = Integer.MAX_VALUE;
 		
