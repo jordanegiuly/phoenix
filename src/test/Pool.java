@@ -1,8 +1,8 @@
 package test;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
-public class Pool extends HashSet<Server> {
+public class Pool extends ArrayList<Server> {
 
 	int color; // its index in the datacenter pools
 	private static final long serialVersionUID = 1L;
