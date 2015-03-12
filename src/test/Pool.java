@@ -4,10 +4,11 @@ import java.util.HashSet;
 
 public class Pool extends HashSet<Server> {
 
-	int color; // its index in the datacenter pools
+	public int color; // its index in the datacenter pools
 	private static final long serialVersionUID = 1L;
+	public int worstRow;
 	
-	int getCapacity(int rowDown) {
+	public int getCapacity(int rowDown) {
 		int capacity = 0;
 		for(Server server : this) {
 			if(server.isAllocated() && server.ar != rowDown) {
@@ -32,22 +33,22 @@ public class Pool extends HashSet<Server> {
 			int cap = getCapacity(rowDown);
 			if(cap<minCapacity) {
 				minCapacity=cap;
+				worstRow = rowDown;
 			}
 		}
 		return minCapacity;
 	}
 	
 	
-	public int down(int numTotalRows) {
-		int minCapacity = Integer.MAX_VALUE;
+	public int worstRow(int numTotalRows) {
+		int minCapacity = guaranteedCapacity(numTotalRows);
 		
 		for(int rowDown=0; rowDown<numTotalRows; rowDown++) {
 			int cap = getCapacity(rowDown);
-			if(cap<minCapacity) {
-				minCapacity=cap;
+			if(cap == minCapacity) {
+				return rowDown;
 			}
 		}
-		return minCapacity;
+		return 0;
 	}
-
 }

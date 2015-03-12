@@ -9,6 +9,7 @@ import java.util.List;
 
 import test.Datacenter;
 import test.Server;
+import test.Pool;
 
 public class SmallToBig {
 
@@ -50,7 +51,7 @@ public class SmallToBig {
 		Greedy.allocatePools2(dc);
 		
 		for(Server server : sortedServers){
-			System.out.println(server);
+			//System.out.println(server);
 		}
 	}
 	
@@ -104,8 +105,11 @@ public class SmallToBig {
 		System.out.println(datacenter.valid());
 		System.out.println(datacenter.getScore());
 		
-		//System.out.println(datacenter.R);
-		//System.out.println(datacenter.allServers.get(0));
+		for(Pool pool : datacenter.allPools){
+			System.out.println(pool.guaranteedCapacity(datacenter.R) + " " + pool.worstRow(datacenter.R));
+		}
+		
+		
 		
 		datacenter.saveSolutionToFile(new File("data/solution3.txt"));
 	}
