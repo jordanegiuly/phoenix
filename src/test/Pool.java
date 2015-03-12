@@ -17,7 +17,7 @@ public class Pool extends HashSet<Server> {
 		return capacity;
 	}
 	
-	int getTotalCapacity() {
+	public int getTotalCapacity() {
 		int capacity = 0;
 		for(Server server : this) {
 			capacity += server.c;
