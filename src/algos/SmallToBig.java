@@ -24,26 +24,36 @@ public class SmallToBig {
 		
 		Collections.sort(sortedServers, new Comparator<Server>() {
 			public int compare(Server s1, Server s2) {
+				float ratio1 = s1.c / s1.z;
+				float ratio2 = s2.c / s2.z;
+				
+				//option 1: capacity
 				if(s1.c < s2.c) return 1;
 				if(s1.c > s2.c) return -1;
 				return 0;
+				
+				//option 2: ratio
+				//if(ratio1 < ratio2) return 1;
+				//if(ratio1 > ratio2) return -1;
+				//return 0;
 			}
 		});
 		
 		int i = 0;
 		for(Server server : sortedServers){
-			placeServer(dc, server, i);
-			i++;
+			i = placeServer(dc, server, i) + 1;
 			if (i == dc.R) {
 				i = 0;
 			};
+			System.out.println(server);
 		}
 	}
 	
 	
-	public static void placeServer(Datacenter dc, Server server, int row) {
+	public static int placeServer(Datacenter dc, Server server, int row) {
+		int tries = 0;
 		int i = row;
-		while(i < dc.R) {
+		while(tries < dc.R) {
 			int j = 0;
 			while(j < dc.S) {
 				if (canBePlaced(dc, i, j, server.z)) { //we place the server here
@@ -51,7 +61,6 @@ public class SmallToBig {
 					server.ar = i;
 					server.as = j;
 					Random r = new Random();
-					
 					
 					int color = r.nextInt(dc.allPools.size());
 					Pool targetPool = dc.allPools.get(color);
@@ -61,12 +70,17 @@ public class SmallToBig {
 					for (int k = j; k < j + server.z; k++){
 						dc.available[i][k] = false;
 					}
-					return;
+					return i;
 				}
 				j++;
 			};
+			tries++;
 			i++;
+			if (i == dc.R) {
+				i = 0;
+			}
 		}
+		return 0;
 	}
 	
 	public static boolean canBePlaced(Datacenter dc, int i, int j, int z) {

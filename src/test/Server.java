@@ -32,6 +32,6 @@ public class Server {
 	}
 	
 	public String toString() {
-		return this.z+" "+this.c;
+		return this.z+" "+this.c + " " + this.ar + " " + this.as;
 	}
 }
