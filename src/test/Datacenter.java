@@ -160,6 +160,17 @@ public class Datacenter {
     	return sb.toString();
     }
     
+    public int getScore() {
+    	int lowestCapacity = Integer.MAX_VALUE;
+    	for(Pool pool: allPools) {
+    		int g = pool.guaranteedCapacity(this.R);
+    		if(g<lowestCapacity) {
+    			lowestCapacity = g;
+    		}
+    	}
+    	return lowestCapacity;
+    }
+    
     public static void main(String[] args) throws IOException {
     	
     	Datacenter datacenter = new Datacenter(new File("data/dc.in"));
