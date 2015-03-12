@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 import test.Datacenter;
+import test.Pool;
 import test.Server;
 
 public class SmallToBig {
@@ -45,8 +46,13 @@ public class SmallToBig {
 					server.ar = i;
 					server.as = j;
 					Random r = new Random();
+					
+					
 					int color = r.nextInt(dc.allPools.size());
-					server.pool = dc.allPools.get(color);
+					Pool targetPool = dc.allPools.get(color);
+					server.pool = targetPool;
+					targetPool.add(server);
+					
 					
 					for (int k = j; k < j + server.z; k++){
 						dc.available[i][k] = false;
