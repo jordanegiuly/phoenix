@@ -125,7 +125,7 @@ public class Greedy {
     			int put = SmallToBig.placeServer(dc, server, r);
     			if(put>=0) {
     				int newScore = dc.getScore();
-    				if(newScore>bestNewScore) {
+    				if(newScore>=bestNewScore) {
     					bestNewScore = newScore;
     					bestRow = r;
     				}
@@ -135,6 +135,8 @@ public class Greedy {
     		
     		if(bestRow>-1 && bestNewScore>=scoreBefore) {
     			SmallToBig.placeServer(dc, server, bestRow);
+    		} else {
+    			System.out.println("not added");
     		}
     		
     		
@@ -142,6 +144,35 @@ public class Greedy {
     		
     		
     	}
+    	
+    }
+    
+    public static void doIt3(Datacenter dc) {
+    	
+    	allocatePools(dc); 
+    	Random r = new Random();
+    	
+    	for(Server server : dc.allServers) {
+    		int i = r.nextInt(dc.R);
+    		int j = r.nextInt(dc.S);
+    		int tries = 0;
+    		while(tries<10000 && !SmallToBig.canBePlaced(dc, i, j, server.z)){
+    			i = r.nextInt(dc.R);
+        		j = r.nextInt(dc.S);
+        		tries++;
+    		}
+    		
+    		if(tries<10000) {
+    			server.ar = i;
+				server.as = j;
+				for (int k = j; k < j + server.z; k++){
+					dc.available[i][k] = false;
+				}
+    		}
+    		
+    	}
+    	
+    	
     	
     }
     
@@ -180,11 +211,40 @@ public class Greedy {
 	
 	*/
     
-    
+    public static void doIt3Loop(Datacenter dc) {
+    	int numTries = 0;
+    	while(numTries<10000) {
+    		numTries++;
+    		/*
+    		dc.available = new boolean[dc.R][dc.S];
+    		for(int i=0; i<dc.R; i++) {
+    			for(int j=0; j<dc.S; j++) {
+    				dc.available[i][j] = dc.inititalAvailabilities[i][j] ;
+    			}
+    		}
+    		*/
+    		for(Server s : dc.allServers) {
+    			if(s.isAllocated()){
+    			    SmallToBig.unplaceServer(dc, s);
+    			}
+    		}
+    		
+    		
+    		doIt3(dc);
+    		int score = dc.getScore();
+    		System.out.println("Got:"+score);
+            if(score>336) {
+            	break;
+            }
+    	}
+    	
+    	
+    }
     
     public static void main(String[] args) throws IOException {
     	Datacenter datacenter = new Datacenter(new File("data/dc.in"));
-		doIt2(datacenter);
+		
+    	doIt3Loop(datacenter);
 		//SmallToBig.revertWorst(datacenter);
 		/*
 		int minCapacity = Integer.MAX_VALUE;
@@ -199,6 +259,7 @@ public class Greedy {
 		
 		System.out.println(minCapacity);
 		*/
+		System.out.println(datacenter);
 		System.out.println(datacenter.valid());
 		System.out.println(datacenter.getScore());
 		/*

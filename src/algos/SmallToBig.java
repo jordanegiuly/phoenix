@@ -157,6 +157,7 @@ public class SmallToBig {
 		}
 		
 		revertWorst(datacenter);
+		System.out.println(datacenter);
 		
 		datacenter.saveSolutionToFile(new File("data/solution3.txt"));
 	}

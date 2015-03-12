@@ -27,7 +27,7 @@ public class Server {
 		this.pool = pool;
 	}
 	
-	boolean isAllocated() {
+	public boolean isAllocated() {
 		return ar >= 0;
 	}
 	

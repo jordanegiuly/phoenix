@@ -15,6 +15,7 @@ public class Datacenter {
 
 	public int R; // numRows
 	public int S; // numColumns
+	public boolean[][] inititalAvailabilities;
 	public boolean[][] available;
 	public int U; // num unavaible servers
 	public List<Server> allServers; // of size M
@@ -69,6 +70,13 @@ public class Datacenter {
 
 		//Close the input stream
 		br.close();
+		
+		this.inititalAvailabilities = new boolean[R][S];
+		for(int i=0; i<R; i++) {
+			for(int j=0; j<S; j++) {
+				this.inititalAvailabilities[i][j] = this.available[i][j] ;
+			}
+		}
 	}
     
     public void saveSolutionToFile(File file) throws IOException {
@@ -145,6 +153,7 @@ public class Datacenter {
     		
     		for(int j=server.as; j<server.as+server.z;j++) {
     			int color = server.pool.color;
+    			
     			if(color<10) {
     				chars[server.ar][j] = "  "+color;
     			} else {
