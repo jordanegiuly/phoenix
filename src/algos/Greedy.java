@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 
 import test.Datacenter;
 import test.Pool;
@@ -67,6 +68,8 @@ public class Greedy {
     				//option 2: ratio
     				if(ratio1 < ratio2) return 1;
     				if(ratio1 > ratio2) return -1;
+    				//if(s1.c < s2.c) return 1;
+    				//if(s1.c > s2.c) return -1;
     				return 0;
     			}
     		});
@@ -76,6 +79,7 @@ public class Greedy {
     	}
     	
     	// now position:
+    	
     	for(int n = 0; n<maxSize; n++) {
     		
     		for(Pool pool : dc.allPools) {
@@ -95,7 +99,7 @@ public class Greedy {
     			int r = server.pool.worstRow(dc.R);
     			for(int r2=0; r2<dc.R; r2++) {
     				if(r==r2) continue;
-    				int put =SmallToBig.placeServer(dc, server, r2);
+    				int put = SmallToBig.placeServer(dc, server, r2);
     				if(put>=0) {
     					System.out.println("placed");
     					break;
@@ -107,7 +111,39 @@ public class Greedy {
     	
     }
     
-    
+    public static void doIt2(Datacenter dc) {
+    	
+    	allocatePools(dc); 
+    	
+    	for(Server server : dc.allServers) {
+    		
+    		int scoreBefore = dc.getScore();
+    		int bestRow = -1;
+    		int bestNewScore = -1;
+    		
+    		for(int r=0; r<dc.R; r++) {
+    			int put = SmallToBig.placeServer(dc, server, r);
+    			if(put>=0) {
+    				int newScore = dc.getScore();
+    				if(newScore>bestNewScore) {
+    					bestNewScore = newScore;
+    					bestRow = r;
+    				}
+    				SmallToBig.unplaceServer(dc, server);
+    			}
+    		}
+    		
+    		if(bestRow>-1 && bestNewScore>=scoreBefore) {
+    			SmallToBig.placeServer(dc, server, bestRow);
+    		}
+    		
+    		
+    		
+    		
+    		
+    	}
+    	
+    }
     
 	/*
 	public boolean[][] occupied;
@@ -148,7 +184,8 @@ public class Greedy {
     
     public static void main(String[] args) throws IOException {
     	Datacenter datacenter = new Datacenter(new File("data/dc.in"));
-		doIt(datacenter);
+		doIt2(datacenter);
+		//SmallToBig.revertWorst(datacenter);
 		/*
 		int minCapacity = Integer.MAX_VALUE;
 		for(Pool pool : dc.allPools) {

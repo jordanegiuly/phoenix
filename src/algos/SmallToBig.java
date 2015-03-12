@@ -56,6 +56,14 @@ public class SmallToBig {
 	}
 	
 	
+	public static void unplaceServer(Datacenter dc, Server server) {	
+		for (int k = server.as; k < server.as + server.z; k++){
+			dc.available[server.ar][k] = true;
+		}
+		server.ar = -1;
+		server.as = -1;
+	}
+	
 	public static int placeServer(Datacenter dc, Server server, int row) {
 		int tries = 0;
 		int i = row;
