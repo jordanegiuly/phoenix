@@ -2,6 +2,9 @@ package algos;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import test.Datacenter;
 import test.Pool;
@@ -51,7 +54,27 @@ public class Greedy {
 		}
 	}
 
-	
+    public static void doIt(Datacenter dc) {
+    	
+    	allocatePools(dc); 
+    	
+    	for(Pool pool: dc.allPools) {
+    		Collections.sort(pool, new Comparator<Server>() {
+    			public int compare(Server s1, Server s2) {
+    				float ratio1 = s1.c / s1.z;
+    				float ratio2 = s2.c / s2.z;
+    				//option 2: ratio
+    				if(ratio1 < ratio2) return 1;
+    				if(ratio1 > ratio2) return -1;
+    				return 0;
+    			}
+    		});
+    	}
+    	
+    	
+    	
+    }
+    
 	/*
 	public boolean[][] occupied;
 	
