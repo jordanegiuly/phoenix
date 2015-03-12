@@ -17,6 +17,14 @@ public class Pool extends HashSet<Server> {
 		return capacity;
 	}
 	
+	int getTotalCapacity() {
+		int capacity = 0;
+		for(Server server : this) {
+			capacity += server.c;
+		}
+		return capacity;
+	}
+	
 	int guaranteedCapacity(int numRows) {
 		int minCapacity = Integer.MAX_VALUE;
 		
