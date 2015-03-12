@@ -77,7 +77,12 @@ public class Datacenter {
 	 	for(int i=0; i<allServers.size(); i++) {
 	 		Server server = this.allServers.get(i);
 			if(server.isAllocated()) {
-			    bw.write(String.format("%d %d %d", server.ar, server.as, server.pool.color));	
+				if(server.pool != null) {
+					bw.write(String.format("%d %d %d", server.ar, server.as, server.pool.color));
+				} else {
+					bw.write(String.format("%d %d .", server.ar, server.as));
+				}
+			    	
 			} else {
 				bw.write("x");
 			}
