@@ -88,12 +88,95 @@ public class Datacenter {
 	 	bw.close();
     }
     
+    public boolean valid() {
+    	 
+    	boolean[][] occupied = new boolean[R][S];
+    	for(int i=0; i<R; i++) {
+			for(int j=0; j<S; j++) {
+				occupied[i][j] = available[i][j];
+			}
+		}
+    	
+    	for(Server server : allServers) {
+    		if(!server.isAllocated()) {
+    			continue;
+    		}
+    		
+    		if(server.ar<0 || server.ar>=R) return false;
+    		if(server.as<0 || server.as>=S) return false;
+    		if(server.as+server.z>S) return false;
+    		
+    		for(int j=server.as; j<server.as+server.z;j++) {
+    			if(occupied[server.ar][j]) {
+    				return false; // already occupied
+    			}
+    			occupied[server.ar][j] = true;
+    		}
+    	}
+
+    	return true; 
+    	
+    }
+    
+    public String toString() {
+    	
+    	String[][]  chars = new String[R][S];
+    	
+    	for(int i=0; i<R; i++) {
+			for(int j=0; j<S; j++) {
+				if(!available[i][j]) {
+					chars[i][j] = "  x";
+				} else {
+					chars[i][j] = "  0";
+				}
+			}
+		}
+    	
+    	for(Server server : allServers) {
+    		if(!server.isAllocated()) {
+    			continue;
+    		}
+    		
+    		for(int j=server.as; j<server.as+server.z;j++) {
+    			int color = server.pool.color;
+    			if(color<10) {
+    				chars[server.ar][j] = "  "+color;
+    			} else {
+    				chars[server.ar][j] = " "+color;
+    			}
+    			 
+    		}
+    	}
+    	
+    	StringBuilder sb = new StringBuilder();
+    	for(String[] ss : chars) {
+    		String line = "";
+    		for(String s : ss) {
+    			line += s;
+    		}
+    		line += "\n";
+    		sb.append(line);
+    	}
+    	return sb.toString();
+    }
+    
+    public int getScore() {
+    	int lowestCapacity = Integer.MAX_VALUE;
+    	for(Pool pool: allPools) {
+    		int g = pool.guaranteedCapacity(this.R);
+    		if(g<lowestCapacity) {
+    			lowestCapacity = g;
+    		}
+    	}
+    	return lowestCapacity;
+    }
+    
     public static void main(String[] args) throws IOException {
     	
     	Datacenter datacenter = new Datacenter(new File("data/dc.in"));
     	
     	System.out.println(datacenter.R);
-    	System.out.println(datacenter.allServers.get(0));
+    	System.out.println(datacenter);
     	
     	datacenter.saveSolutionToFile(new File("data/solution0.txt"));
     	
