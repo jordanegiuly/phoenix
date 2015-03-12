@@ -90,7 +90,7 @@ public class Datacenter {
     
     public static void main(String[] args) throws IOException {
     	
-    	Datacenter datacenter = new Datacenter(new File("data/test-data.txt"));
+    	Datacenter datacenter = new Datacenter(new File("data/dc.in"));
     	
     	System.out.println(datacenter.R);
     	System.out.println(datacenter.allServers.get(0));
