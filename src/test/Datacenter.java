@@ -19,7 +19,7 @@ public class Datacenter {
 	public int U; // num unavaible servers
 	public List<Server> allServers; // of size M
 	public List<Pool> allPools;
-	public Pool worstPool;
+	//public Pool worstPool;
 	
     public Datacenter(File file) throws IOException {
 		
@@ -173,10 +173,22 @@ public class Datacenter {
     		int g = pool.guaranteedCapacity(this.R);
     		if(g<lowestCapacity) {
     			lowestCapacity = g;
-    			this.worstPool = pool;
     		}
     	}
     	return lowestCapacity;
+    }
+    
+    public Pool worstPool() {
+    	Pool worstpool = allPools.get(0);
+    	int lowestCapacity = Integer.MAX_VALUE;
+    	for(Pool pool: allPools) {
+    		int g = pool.guaranteedCapacity(this.R);
+    		if( g < lowestCapacity) {
+    			lowestCapacity = g;
+    			worstpool = pool;
+    		}
+    	}
+    	return worstpool;
     }
     
     

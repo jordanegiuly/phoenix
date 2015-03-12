@@ -100,21 +100,34 @@ public class SmallToBig {
 	
 	public static void revertWorst(Datacenter dc) {
 		int i = 0;
-		while(i<10){
+		while(i<300){
 			int score = dc.getScore();
 			System.out.println("score " + score);
-			Pool worstPool = dc.worstPool;
+			Pool worstPool = dc.worstPool();
 			int minCapat = worstPool.guaranteedCapacity(dc.R);
 			System.out.println("minCapat " + minCapat);
-			int worstRow = worstPool.worstRow;
-			Server higherCapServer = dc.getHigherCapServer(worstRow);
-			System.out.println("higherCapServer " + higherCapServer);
-			for (Server server : dc.allServers) {
-				if ((server.pool.color == worstPool.color) && 
-					(server.z == higherCapServer.z) && (server.c > higherCapServer.c - 10 )) {
-					Server.swapServers(server, higherCapServer);
-					System.out.println("swap");
-					break;
+			int worstRow = worstPool.worstRow(dc.R);
+			System.out.println("worstRow " + worstRow);
+			boolean swap = false;
+			for (Server serverInRow : dc.allServers) {
+				if ((!swap) && (serverInRow.ar == worstRow) && (serverInRow.pool.color == worstPool.color)) {
+					System.out.println(serverInRow);
+					for (Server server : dc.allServers) {
+						if ((!swap) && (server.pool.color == worstPool.color) && 
+							(server.z == serverInRow.z) && (server.c < serverInRow.c)
+							 && (server.ar != serverInRow.ar)) {
+							System.out.println(server);
+							System.out.println(serverInRow);
+							Server.swapServers(serverInRow, server);
+							if (dc.getScore() <= score) {
+								Server.swapServers(server, serverInRow);
+								
+							} else {
+								System.out.println("swap!");
+								swap = true;
+							}
+						}
+					}
 				}
 			}
 			i++;
