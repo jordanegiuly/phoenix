@@ -41,15 +41,18 @@ public class Pool extends ArrayList<Server> {
 	
 	
 	public int worstRow(int numTotalRows) {
-		int minCapacity = guaranteedCapacity(numTotalRows);
+		//int minCapacity = guaranteedCapacity(numTotalRows);
 		
+		int maxCapacity = 0;
+		int worstRow =-1;
 		for(int rowDown=0; rowDown<numTotalRows; rowDown++) {
 			int cap = getCapacity(rowDown);
-			if(cap == minCapacity) {
-				return rowDown;
+			if(cap > maxCapacity) {
+				maxCapacity = cap;
+				worstRow=rowDown;
 			}
 		}
-		return 0;
+		return worstRow;
 	}
 	
 	public int worstRowTotal(int numTotalRows) {
