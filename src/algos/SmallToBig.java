@@ -27,15 +27,17 @@ public class SmallToBig {
 				float ratio1 = s1.c / s1.z;
 				float ratio2 = s2.c / s2.z;
 				
-				//option 1: capacity
-				if(s1.c < s2.c) return 1;
-				if(s1.c > s2.c) return -1;
-				return 0;
-				
 				//option 2: ratio
-				//if(ratio1 < ratio2) return 1;
-				//if(ratio1 > ratio2) return -1;
-				//return 0;
+				if(ratio1 < ratio2) return 1;
+				if(ratio1 > ratio2) return -1;
+				
+				//option 1: capacity
+				//if(s1.c < s2.c) return 1;
+				//if(s1.c > s2.c) return -1;
+				//if(s1.z > s2.z) return 1;
+				//if(s1.z < s2.z) return -1;
+				return 0;
+		
 			}
 		});
 		
@@ -47,9 +49,11 @@ public class SmallToBig {
 			};
 		}
 		
-		Greedy.allocatePools(dc);
+		Greedy.allocatePools2(dc);
 		
-		//System.out.println(server);
+		for(Server server : sortedServers){
+			System.out.println(server);
+		}
 	}
 	
 	

@@ -36,5 +36,17 @@ public class Pool extends HashSet<Server> {
 		}
 		return minCapacity;
 	}
+	
+	public int down(int numTotalRows) {
+		int minCapacity = Integer.MAX_VALUE;
+		
+		for(int rowDown=0; rowDown<numTotalRows; rowDown++) {
+			int cap = getCapacity(rowDown);
+			if(cap<minCapacity) {
+				minCapacity=cap;
+			}
+		}
+		return minCapacity;
+	}
 
 }
