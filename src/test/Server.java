@@ -12,7 +12,7 @@ public class Server {
 	public Server(int z, int c) {
 		this.z = z;
 		this.c = c;
-		this.pool =null;
+		this.pool = null;
 		this.ar = -1;
 		this.as = -1;
 	}
@@ -30,4 +30,7 @@ public class Server {
 		return ar >= 0;
 	}
 	
+	public String toString() {
+		return this.z+" "+this.c;
+	}
 }
