@@ -119,7 +119,45 @@ public class Datacenter {
     }
     
     public String toString() {
-    	return "";
+    	
+    	String[][]  chars = new String[R][S];
+    	
+    	for(int i=0; i<R; i++) {
+			for(int j=0; j<S; j++) {
+				if(!available[i][j]) {
+					chars[i][j] = "  x";
+				} else {
+					chars[i][j] = "  0";
+				}
+			}
+		}
+    	
+    	for(Server server : allServers) {
+    		if(!server.isAllocated()) {
+    			continue;
+    		}
+    		
+    		for(int j=server.as; j<server.as+server.z;j++) {
+    			int color = server.pool.color;
+    			if(color<10) {
+    				chars[server.ar][j] = "  "+color;
+    			} else {
+    				chars[server.ar][j] = " "+color;
+    			}
+    			 
+    		}
+    	}
+    	
+    	StringBuilder sb = new StringBuilder();
+    	for(String[] ss : chars) {
+    		String line = "";
+    		for(String s : ss) {
+    			line += s;
+    		}
+    		line += "\n";
+    		sb.append(line);
+    	}
+    	return sb.toString();
     }
     
     public static void main(String[] args) throws IOException {
@@ -127,7 +165,7 @@ public class Datacenter {
     	Datacenter datacenter = new Datacenter(new File("data/dc.in"));
     	
     	System.out.println(datacenter.R);
-    	System.out.println(datacenter.allServers.get(0));
+    	System.out.println(datacenter);
     	
     	datacenter.saveSolutionToFile(new File("data/solution0.txt"));
     	
