@@ -2,7 +2,6 @@ package algos;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -58,6 +57,8 @@ public class Greedy {
     	
     	allocatePools(dc); 
     	
+    	// sort by best ratio
+    	int maxSize = 0;
     	for(Pool pool: dc.allPools) {
     		Collections.sort(pool, new Comparator<Server>() {
     			public int compare(Server s1, Server s2) {
@@ -69,11 +70,44 @@ public class Greedy {
     				return 0;
     			}
     		});
+    		if(pool.size()>maxSize) {
+    			maxSize = pool.size();
+    		}
     	}
     	
+    	// now position:
+    	for(int n = 0; n<maxSize; n++) {
+    		
+    		for(Pool pool : dc.allPools) {
+    			if(pool.size()<=n) continue; // already placed all in pool. 
+    			
+    			// look for worse row for this pool 
+    			int r = pool.worstRowTotal(dc.R);
+    			int put = SmallToBig.placeServer(dc, pool.get(n), r);
+    			
+    		}	
+    	}
     	
+    	for(Server server : dc.allServers) {
+    		if(server.ar < 0) {
+    			System.out.println("a");
+				
+    			int r = server.pool.worstRow(dc.R);
+    			for(int r2=0; r2<dc.R; r2++) {
+    				if(r==r2) continue;
+    				int put =SmallToBig.placeServer(dc, server, r2);
+    				if(put>=0) {
+    					System.out.println("placed");
+    					break;
+    				}
+    			}
+    			
+    		}
+    	}
     	
     }
+    
+    
     
 	/*
 	public boolean[][] occupied;
@@ -113,8 +147,9 @@ public class Greedy {
     
     
     public static void main(String[] args) throws IOException {
-    	Datacenter dc = new Datacenter(new File("data/dc.in"));
-		allocatePools(dc);
+    	Datacenter datacenter = new Datacenter(new File("data/dc.in"));
+		doIt(datacenter);
+		/*
 		int minCapacity = Integer.MAX_VALUE;
 		for(Pool pool : dc.allPools) {
 			int capacity = pool.getTotalCapacity();
@@ -126,6 +161,15 @@ public class Greedy {
 		}
 		
 		System.out.println(minCapacity);
-		
+		*/
+		System.out.println(datacenter.valid());
+		System.out.println(datacenter.getScore());
+		/*
+		for(Pool pool : datacenter.allPools){
+			System.out.println(pool.guaranteedCapacity(datacenter.R) + " " + pool.worstRow(datacenter.R));
+		}
+		*/
+		datacenter.saveSolutionToFile(new File("data/solution4.txt"));
+
     }
 }

@@ -51,4 +51,23 @@ public class Pool extends ArrayList<Server> {
 		}
 		return 0;
 	}
+	
+	public int worstRowTotal(int numTotalRows) {
+		int minCapacity = Integer.MAX_VALUE;
+		int minRow = -1;
+		for(int r=0; r<numTotalRows; r++) {
+			int cap = 0;
+			for(Server server : this) {
+				if(server.ar==r) {
+				    cap += server.c;
+				}
+			}
+			
+			if(cap<minCapacity) {
+				minCapacity = cap;
+				minRow = r;
+			}
+		}
+		return minRow;
+	}
 }

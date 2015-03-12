@@ -80,7 +80,7 @@ public class SmallToBig {
 				i = 0;
 			}
 		}
-		return 0;
+		return -1;
 	}
 	
 	public static boolean canBePlaced(Datacenter dc, int i, int j, int z) {
