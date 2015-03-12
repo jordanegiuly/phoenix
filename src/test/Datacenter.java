@@ -13,12 +13,12 @@ import java.util.List;
 
 public class Datacenter {
 
-	int R; // numRows
-	int S; // numColumns
-	boolean[][] available;
-	int U; // num unavaible servers
-	List<Server> allServers; // of size M
-	List<Pool> allPools;
+	public int R; // numRows
+	public int S; // numColumns
+	public boolean[][] available;
+	public int U; // num unavaible servers
+	public List<Server> allServers; // of size M
+	public List<Pool> allPools;
 	
     public Datacenter(File file) throws IOException {
 		
