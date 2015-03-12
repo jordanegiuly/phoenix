@@ -88,6 +88,40 @@ public class Datacenter {
 	 	bw.close();
     }
     
+    public boolean valid() {
+    	 
+    	boolean[][] occupied = new boolean[R][S];
+    	for(int i=0; i<R; i++) {
+			for(int j=0; j<S; j++) {
+				occupied[i][j] = available[i][j];
+			}
+		}
+    	
+    	for(Server server : allServers) {
+    		if(!server.isAllocated()) {
+    			continue;
+    		}
+    		
+    		if(server.ar<0 || server.ar>=R) return false;
+    		if(server.as<0 || server.as>=S) return false;
+    		if(server.as+server.z>S) return false;
+    		
+    		for(int j=server.as; j<server.as+server.z;j++) {
+    			if(occupied[server.ar][j]) {
+    				return false; // already occupied
+    			}
+    			occupied[server.ar][j] = true;
+    		}
+    	}
+
+    	return true; 
+    	
+    }
+    
+    public String toString() {
+    	return "";
+    }
+    
     public static void main(String[] args) throws IOException {
     	
     	Datacenter datacenter = new Datacenter(new File("data/dc.in"));
