@@ -80,7 +80,7 @@ public class SmallToBig {
 				i = 0;
 			}
 		}
-		return 0;
+		return -1;
 	}
 	
 	public static boolean canBePlaced(Datacenter dc, int i, int j, int z) {
@@ -98,6 +98,32 @@ public class SmallToBig {
 		}
 	};
 	
+	public static void revertWorst(Datacenter dc) {
+		int i = 0;
+		while(i<10){
+			int score = dc.getScore();
+			System.out.println("score " + score);
+			Pool worstPool = dc.worstPool;
+			int minCapat = worstPool.guaranteedCapacity(dc.R);
+			System.out.println("minCapat " + minCapat);
+			int worstRow = worstPool.worstRow;
+			Server higherCapServer = dc.getHigherCapServer(worstRow);
+			System.out.println("higherCapServer " + higherCapServer);
+			for (Server server : dc.allServers) {
+				if ((server.pool.color == worstPool.color) && 
+					(server.z == higherCapServer.z) && (server.c > higherCapServer.c - 10 )) {
+					Server.swapServers(server, higherCapServer);
+					System.out.println("swap");
+					break;
+				}
+			}
+			i++;
+		}
+		int score = dc.getScore();
+		System.out.println(score);
+	}
+	
+	
 	public static void main(String[] args) throws IOException {
 		
 		Datacenter datacenter = new Datacenter(new File("data/dc.in"));
@@ -106,10 +132,10 @@ public class SmallToBig {
 		System.out.println(datacenter.getScore());
 		
 		for(Pool pool : datacenter.allPools){
-			System.out.println(pool.guaranteedCapacity(datacenter.R) + " " + pool.worstRow(datacenter.R));
+			//System.out.println(pool.guaranteedCapacity(datacenter.R) + " " + pool.worstRow(datacenter.R));
 		}
 		
-		
+		revertWorst(datacenter);
 		
 		datacenter.saveSolutionToFile(new File("data/solution3.txt"));
 	}

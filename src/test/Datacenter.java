@@ -19,6 +19,7 @@ public class Datacenter {
 	public int U; // num unavaible servers
 	public List<Server> allServers; // of size M
 	public List<Pool> allPools;
+	public Pool worstPool;
 	
     public Datacenter(File file) throws IOException {
 		
@@ -165,16 +166,30 @@ public class Datacenter {
     	return sb.toString();
     }
     
+    
     public int getScore() {
     	int lowestCapacity = Integer.MAX_VALUE;
     	for(Pool pool: allPools) {
     		int g = pool.guaranteedCapacity(this.R);
     		if(g<lowestCapacity) {
     			lowestCapacity = g;
+    			this.worstPool = pool;
     		}
     	}
     	return lowestCapacity;
     }
+    
+    
+    public Server getHigherCapServer(int row) {
+    	Server result = allServers.get(0);
+    	for(Server server: allServers) {
+    		if ((server.ar == row) && (server.c > result.c)) {
+    			result = server;
+    		}
+    	}
+    	return result;
+    }
+   
     
     public static void main(String[] args) throws IOException {
     	

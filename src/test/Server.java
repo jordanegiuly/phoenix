@@ -34,4 +34,13 @@ public class Server {
 	public String toString() {
 		return this.z+" "+this.c + " (" + this.ar + ", " + this.as + ") " + pool.color;
 	}
+	
+	public static void swapServers(Server server1, Server server2) {
+		int ar1 = server1.ar; int as1 = server1.as;
+		server1.ar = server2.ar;
+		server1.as = server2.as;
+		server2.ar = ar1;
+		server2.as = as1;
+	}
+	
 }
