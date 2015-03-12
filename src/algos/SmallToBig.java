@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 import test.Datacenter;
 import test.Server;
@@ -30,7 +31,6 @@ public class SmallToBig {
 		
 		for(Server server : sortedServers){
 			placeServer(dc, server);
-			System.out.println(server.c);
 		}
 	}
 	
@@ -44,6 +44,9 @@ public class SmallToBig {
 					
 					server.ar = i;
 					server.as = j;
+					Random r = new Random();
+					int color = r.nextInt(dc.allPools.size());
+					server.pool = dc.allPools.get(color);
 					
 					for (int k = j; k < j + server.z; k++){
 						dc.available[i][k] = false;
@@ -75,10 +78,12 @@ public class SmallToBig {
 		
 		Datacenter datacenter = new Datacenter(new File("data/dc.in"));
 		sortServersDesc(datacenter);
+		System.out.println(datacenter.valid());
+		System.out.println(datacenter.getScore());
+		
 		//System.out.println(datacenter.R);
 		//System.out.println(datacenter.allServers.get(0));
 		
-		//datacenter.saveSolutionToFile(new File("data/solution0.txt"));
-		
+		datacenter.saveSolutionToFile(new File("data/solution1.txt"));
 	}
 }
