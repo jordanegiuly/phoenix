@@ -30,14 +30,19 @@ public class SmallToBig {
 			}
 		});
 		
+		int i = 0;
 		for(Server server : sortedServers){
-			placeServer(dc, server);
+			placeServer(dc, server, i);
+			i++;
+			if (i == dc.R) {
+				i = 0;
+			};
 		}
 	}
 	
 	
-	public static void placeServer(Datacenter dc, Server server) {
-		int i = 0;
+	public static void placeServer(Datacenter dc, Server server, int row) {
+		int i = row;
 		while(i < dc.R) {
 			int j = 0;
 			while(j < dc.S) {
@@ -52,7 +57,6 @@ public class SmallToBig {
 					Pool targetPool = dc.allPools.get(color);
 					server.pool = targetPool;
 					targetPool.add(server);
-					
 					
 					for (int k = j; k < j + server.z; k++){
 						dc.available[i][k] = false;
