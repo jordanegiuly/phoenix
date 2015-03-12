@@ -2,12 +2,13 @@ package test;
 
 public class Server {
 
-	int z; // size (physical)
-	int c; // capacity
-	Pool pool; // null if not allocated
 	
-	int ar; // unallocated if <-1 
-	int as;
+	public int z; // size (physical)
+	public int c; // capacity
+	public Pool pool; // null if not allocated
+	
+	public int ar; // unallocated if <-1 
+	public int as;
 	
 	public Server(int z, int c) {
 		this.z = z;
