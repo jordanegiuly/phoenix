@@ -45,8 +45,11 @@ public class SmallToBig {
 			if (i == dc.R) {
 				i = 0;
 			};
-			System.out.println(server);
 		}
+		
+		Greedy.allocatePools(dc);
+		
+		//System.out.println(server);
 	}
 	
 	
@@ -60,12 +63,6 @@ public class SmallToBig {
 					
 					server.ar = i;
 					server.as = j;
-					Random r = new Random();
-					
-					int color = r.nextInt(dc.allPools.size());
-					Pool targetPool = dc.allPools.get(color);
-					server.pool = targetPool;
-					targetPool.add(server);
 					
 					for (int k = j; k < j + server.z; k++){
 						dc.available[i][k] = false;
@@ -108,6 +105,6 @@ public class SmallToBig {
 		//System.out.println(datacenter.R);
 		//System.out.println(datacenter.allServers.get(0));
 		
-		datacenter.saveSolutionToFile(new File("data/solution1.txt"));
+		datacenter.saveSolutionToFile(new File("data/solution3.txt"));
 	}
 }
