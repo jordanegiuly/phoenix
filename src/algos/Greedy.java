@@ -149,7 +149,7 @@ public class Greedy {
     
     public static void doIt3(Datacenter dc) {
     	
-    	allocatePools(dc); 
+    	
     	Random r = new Random();
     	
     	for(Server server : dc.allServers) {
@@ -212,6 +212,9 @@ public class Greedy {
 	*/
     
     public static void doIt3Loop(Datacenter dc) {
+    	
+    	allocatePools(dc); 
+    	
     	int numTries = 0;
     	while(numTries<10000) {
     		numTries++;
@@ -267,7 +270,7 @@ public class Greedy {
 			System.out.println(pool.guaranteedCapacity(datacenter.R) + " " + pool.worstRow(datacenter.R));
 		}
 		*/
-		datacenter.saveSolutionToFile(new File("data/solution4.txt"));
+		datacenter.saveSolutionToFile(new File("data/solution5.txt"));
 
     }
 }
